@@ -1,5 +1,6 @@
 mod gemini;
 mod level;
+mod meaning;
 
 use std::fs;
 use std::thread::sleep;
@@ -13,9 +14,9 @@ use crossterm::{
 };
 use getch_rs::Getch;
 use getch_rs::Key;
+use meaning::Meaning;
 use rand::seq::SliceRandom;
 use rand::{thread_rng, Rng};
-use serde::{Deserialize, Serialize};
 
 use gemini::Gemini;
 use level::questions;
@@ -110,9 +111,9 @@ impl Storage {
             if let Some(meaning) = self
                 .level_section_meanings
                 .iter()
-                .find(|m| m.section == *section)
+                .find(|m| m.section() == section)
             {
-                println!("{}: {}", section, meaning.meaning);
+                println!("{}: {}", section, meaning.meaning());
                 continue;
             }
 
@@ -127,10 +128,8 @@ impl Storage {
             print(&section, Color::Blue);
             print!(": ");
             typing_print(&text);
-            self.level_section_meanings.push(Meaning {
-                section: section.clone(),
-                meaning,
-            });
+            self.level_section_meanings
+                .push(Meaning::new(section.clone(), meaning));
             sleep(Duration::from_secs_f32(0.3));
         }
         self.section_meanings[meaning_level - 1] = self.level_section_meanings.clone();
@@ -345,35 +344,6 @@ async fn main() {
     game.quit();
     game.show_meanings().await;
     restore_cursor();
-}
-
-#[derive(Clone, Serialize, Deserialize)]
-struct Meaning {
-    section: String,
-    meaning: String,
-}
-
-impl Meaning {
-    const LEVEL1: &str = "翻訳した文のみを出力してください";
-    const LEVEL2: &str = "軽く説明した文のみを出力してください";
-    const LEVEL3: &str = "説明し、要約した文のみを出力してください";
-    const LEVEL4: &str = "詳しく説明した文のみを出力してください";
-    const LEVEL5: &str = "例文を用いて説明した文のみを出力してください";
-
-    fn template(prompt: &str, section: &str) -> String {
-        format!("英語の`{}`の意味を日本語で{}", section, prompt)
-    }
-
-    fn prompt(section: &String, level: usize) -> String {
-        match level {
-            1 => Self::template(Self::LEVEL1, section),
-            2 => Self::template(Self::LEVEL2, section),
-            3 => Self::template(Self::LEVEL3, section),
-            4 => Self::template(Self::LEVEL4, section),
-            5 => Self::template(Self::LEVEL5, section),
-            _ => panic!("meaning level is not found"),
-        }
-    }
 }
 
 /// カーソルをブロック(点滅)にする
