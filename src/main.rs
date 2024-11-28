@@ -307,7 +307,7 @@ fn typing_print(text: &str) {
     }
 }
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() {
     dotenvy::dotenv().unwrap();
     clear();
