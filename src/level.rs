@@ -705,5 +705,5 @@ const LEVEL10: Questions = [
     ("The advancements in artificial intelligence, if properly regulated, could revolutionize industries ranging from healthcare to finance.", "人工知能の進歩は、適切に規制されれば、医療から金融に至るまでの産業を革命的に変える可能性があります。"),
     ("Were it not for the contributions of this particular research team, the field would have stagnated for decades.", "もしこの特定の研究チームの貢献がなかったなら、その分野は数十年間停滞していたでしょう。"),
     ("The interdisciplinary approach proposed by the panel, if implemented, could lead to breakthroughs in addressing global challenges.", "パネルが提案した学際的なアプローチは、実施されれば、世界的な課題に対処するための突破口を開くかもしれません。"),
-("Had the risks been more clearly communicated, the public's reaction might have been more measured and less hostile.", "もしリスクがもっと明確に伝えられていれば、一般市民の反応はもっと冷静で、敵対的でなかったかもしれません。")
+    ("Had the risks been more clearly communicated, the public's reaction might have been more measured and less hostile.", "もしリスクがもっと明確に伝えられていれば、一般市民の反応はもっと冷静で、敵対的でなかったかもしれません。")
 ];
