@@ -91,7 +91,7 @@ impl Storage {
     }
     fn save_meanings(&self) {
         fs::write(
-            Storage::MEANING_FILE,
+            Self::MEANING_FILE,
             serde_json::to_string(&self.section_meanings).unwrap(),
         )
         .unwrap();
@@ -132,20 +132,19 @@ impl Char {
     fn new(c: char, status: bool) -> Self {
         Self { c, status }
     }
+
     fn print(&self) {
-        print(
-            &self.c.to_string(),
-            if self.status {
-                Color::Green
-            } else {
-                Color::Red
-            },
-        );
+        let color = if self.status {
+            Color::Green
+        } else {
+            Color::Red
+        };
+        print(&self.c.to_string(), color);
     }
 }
 
-impl State {
-    fn new() -> Self {
+impl Default for State {
+    fn default() -> Self {
         Self {
             count: 0,
             correct: 0,
@@ -155,7 +154,16 @@ impl State {
 }
 
 impl GameConfig {
+    const LEVEL_MAX: usize = 10;
+    const MEANING_LEVEL_MAX: usize = 5;
+
     fn new(level: usize, meaning_level: usize, number: u8) -> Self {
+        if level > Self::LEVEL_MAX {
+            panic!("level is not found");
+        }
+        if meaning_level > Self::MEANING_LEVEL_MAX {
+            panic!("meaning level is not found");
+        }
         let mut questions = questions(level).to_vec();
         questions.shuffle(&mut thread_rng());
         Self {
@@ -177,7 +185,7 @@ impl Game {
             now_section: String::new(),
             sections: question.english.split(' ').map(|s| s.to_string()).collect(),
             storage: Storage::new(meaning_level),
-            state: State::new(),
+            state: State::default(),
             config,
         };
         game.change_section();

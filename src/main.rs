@@ -20,17 +20,19 @@ use rand::{thread_rng, Rng};
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
     dotenvy::dotenv().unwrap();
+
     clear();
-    let level = input_msg("level 1~10: ", 0);
-    let meaning_level = input_msg("meaning level 1~5 (default: 1): ", 1);
-    if meaning_level > 5 {
-        panic!("meaning level is not found");
-    }
-    let end = input_msg("number of questions: ", 2);
+    cursor_change();
+
+    input_msg("level 1~10: ", 0);
+    let level = input().trim().parse::<usize>().unwrap_or(1);
+    input_msg("meaning level 1~5: ", 1);
+    let meaning_level = input().trim().parse::<usize>().unwrap_or(1);
+    input_msg("number of questions: ", 2);
+    let end = input().trim().parse::<u8>().unwrap_or(5);
 
     let mut game = Game::new(level, meaning_level, end);
     game.change_section();
-    cursor_change();
 
     loop {
         game.draw();
@@ -99,11 +101,7 @@ fn input() -> String {
     input
 }
 
-fn input_msg<T: std::str::FromStr>(str: &str, y: u16) -> T
-where
-    <T as std::str::FromStr>::Err: std::fmt::Debug,
-{
-    println!("{}", str);
-    move_cursor(str.len() as u16 + 1, y);
-    input().trim().parse().expect("parse error")
+fn input_msg(str: &str, y: u16) {
+    print!("{}", str);
+    move_cursor(str.len() as u16, y);
 }
