@@ -9,7 +9,10 @@ use crossterm::style::Color;
 use rand::{seq::SliceRandom, thread_rng};
 
 use crate::{
-    clear, gemini::Gemini, level::questions, meaning::Meaning, meaning_print, move_cursor, print,
+    gemini::Gemini,
+    level::questions,
+    meaning::Meaning,
+    utils::{clear, meaning_print, move_cursor, print},
 };
 
 type WrongSections = HashMap<String, u16>;

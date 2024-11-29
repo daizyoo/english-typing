@@ -2,20 +2,12 @@ mod game;
 mod gemini;
 mod level;
 mod meaning;
+mod utils;
 
-use std::io::stdout;
-use std::thread::sleep;
-use std::time::Duration;
+use getch_rs::{Getch, Key};
 
-use crossterm::{
-    cursor::MoveTo,
-    execute,
-    style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
-};
 use game::Game;
-use getch_rs::Getch;
-use getch_rs::Key;
-use rand::{thread_rng, Rng};
+use utils::{clear, cursor_change, input, input_msg, restore_cursor};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
@@ -57,51 +49,4 @@ async fn main() {
     game.quit();
     game.show_meanings().await;
     restore_cursor();
-}
-
-/// カーソルをブロック(点滅)にする
-fn restore_cursor() {
-    print!("\x1B[1 q");
-}
-
-/// カーソルを棒にする
-fn cursor_change() {
-    print!("\x1B[5 q");
-}
-
-/// カーソルを移動
-fn move_cursor(x: u16, y: u16) {
-    execute!(stdout(), MoveTo(x, y)).unwrap();
-}
-
-fn meaning_print(text: &str) {
-    for c in text.chars() {
-        print(&c.to_string(), Color::Green);
-        sleep(Duration::from_secs_f32(thread_rng().gen_range(0.03..0.15)));
-    }
-}
-
-/// 文字列を色付きで出力
-fn print(str: &str, color: Color) {
-    if str == " " && color == Color::Red {
-        execute!(stdout(), SetBackgroundColor(color), Print(str), ResetColor).unwrap();
-    } else {
-        execute!(stdout(), SetForegroundColor(color), Print(str), ResetColor).unwrap();
-    }
-}
-
-/// 画面をクリア
-fn clear() {
-    print!("\x1B[2J\x1B[H");
-}
-
-fn input() -> String {
-    let mut input = String::new();
-    std::io::stdin().read_line(&mut input).unwrap();
-    input
-}
-
-fn input_msg(str: &str, y: u16) {
-    print!("{}", str);
-    move_cursor(str.len() as u16, y);
 }
