@@ -28,7 +28,7 @@ impl Meaning {
         format!("英語の`{}`の意味を日本語で{}", section, prompt)
     }
 
-    pub fn prompt(section: &String, level: usize) -> String {
+    pub fn prompt(section: &str, level: usize) -> String {
         match level {
             1 => Self::template(Self::LEVEL1, section),
             2 => Self::template(Self::LEVEL2, section),

@@ -112,14 +112,14 @@ impl Storage {
             }
 
             let Ok(gemini) = Gemini::default()
-                .ask(Meaning::prompt(&section, meaning_level))
+                .ask(Meaning::prompt(section, meaning_level))
                 .await
             else {
                 continue;
             };
             let meaning = gemini.text().trim().to_string();
             let text = format!("{}\n", meaning);
-            print(&section, Color::Blue);
+            print(section, Color::Blue);
             print!(": ");
             meaning_print(&text);
             self.level_section_meanings
