@@ -92,8 +92,7 @@ impl Game {
         if let Some(count) = self.storage.wrong_sections().get_mut(&wrong_section) {
             *count += 1
         } else {
-            // TODO
-            // self.storage.wrong_sections().insert(wrong_section, 1);
+            self.storage.wrong_sections().insert(wrong_section, 1);
         }
     }
     /// 入力結果を一文字削除
