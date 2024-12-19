@@ -6,8 +6,9 @@ mod utils;
 
 use getch_rs::{Getch, Key};
 
-use game::Game;
 use utils::{clear, cursor_change, input, input_msg, restore_cursor};
+
+use game::Game;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
