@@ -18,15 +18,16 @@ impl Game {
     pub fn new(level: usize, meaning_level: usize, number: u8) -> Self {
         let config = GameConfig::new(level, meaning_level, number);
         let question = config.questions()[0].clone();
+        let sections = question
+            .english()
+            .split(' ')
+            .map(|s| s.to_string())
+            .collect();
         let mut game = Self {
-            question: question.clone(),
+            question,
             input: Vec::new(),
             now_section: String::new(),
-            sections: question
-                .english()
-                .split(' ')
-                .map(|s| s.to_string())
-                .collect(),
+            sections,
             storage: Storage::new(meaning_level),
             state: State::default(),
             config,
