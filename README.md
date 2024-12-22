@@ -3,10 +3,9 @@
 ## Usage
 
 ```bash
-cargo run
-level 1~10
+level 1~10 (default: 1)
 meaning level 1~5 (default: 1)
-
+number of questions: (default: 5)
 ```
 
 ## Environment
